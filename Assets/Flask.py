@@ -21,7 +21,7 @@ Ammounts = [['290626',0]
            ,['654538',0]
            ,['2050',0]
            ,['186234',0]]
-api_key = 'aa49186d'
+api_key = '1b135151'
 
 def connect_db():
     print("shit")
@@ -49,14 +49,15 @@ def index():
     print(Ammounts)
     return render_template('index.html', ammounts=Ammounts)
 
-@app.route('/thanks/<char_id>')
-def post_donation(_char_id):
-    _donation_id= requests.args.get('jgDonationId')
+@app.route('/thanks/<char_id>/')
+def post_donation(char_id):
+    _donation_id= request.args.get('jgDonationId')
     donation_details =  requests.get('https://api.justgiving.com/%s/v1/donation/%s'%(api_key, _donation_id))
     obj = xmltodict.parse(donation_details.content)
     amount = obj['donation']['amount']
-    add_entry = [_char_id,amount]
-    return redirect("redirect(url_for('/'))", code=303)
+    add_entry = [char_id,amount]
+    print("I CAME HERE FOR YOU SENPIE")
+    return redirect('/', code=303)
 
 def calucalte_sum_index(entries):
     for elem in entries:
@@ -81,6 +82,7 @@ def getCharities():
 
 @app.route('/api/getPoints')
 def givePoints():
+    #print(Ammounts)
     point_map=json.dumps(dict([(elem[0],elem[1])for elem in Ammounts]))
     return Response(point_map,mimetype='application/json')
 
@@ -90,8 +92,8 @@ def getId (charity_id):
     return Response(testy, mimetype='application/json')
 
 def get_Charity_Details(_charity_id):
-    url = 'https://v3-sandbox.justgiving.com/donation/direct/charity/%s' % (_charity_id)
-    details = requests.get('http://www.justgiving.com/%s/donation/direct/charity/%s/?exitUrl=http%3A%2F%2Flocalhost%3A5000%2Fthanks%2F%s%3FjgDonationId%3DJUSTGIVING-DONATION-ID&reference=0000&utm_source=sdidirect&utm_medium=buttons&utm_campaign=buttontype' % (api_key,api_key,_charity_id))
+    url = 'https://v3-sandbox.justgiving.com/4w350m3/donation/direct/charity/2050/?amount=10.00&exitUrl=http%3A%2F%2F127.0.0.1%2Fthanks%2F2050%3FjgDonationId%3DJUSTGIVING-DONATION-ID&currency=GBP&reference=0000&utm_source=sdidirect&utm_medium=buttons&utm_campaign=buttontype#MessageAndAmount'.format()#.format(api_key,_charity_id,_charity_id)
+    details = requests.get('https://api.justgiving.com/%s/v1/charity/search?q=&charityid=%s'%(api_key,_charity_id))
     obj = xmltodict.parse(details.content)
     description = obj['charitySearch']['charitySearchResults']['charitySearchResult']['description']
     name = obj['charitySearch']['charitySearchResults']['charitySearchResult']['charityDisplayName']
