@@ -49,8 +49,9 @@ def index():
     print(Ammounts)
     return render_template('index.html', ammounts=Ammounts)
 
-@app.route('/thanks/<char_id>?jgDonationId=<donation_id>')
-def post_donation(_char_id,_donation_id):
+@app.route('/thanks/<char_id>')
+def post_donation(_char_id):
+    _donation_id= requests.args.get('jgDonationId')
     donation_details =  requests.get('https://api.justgiving.com/%s/v1/donation/%s'%(api_key, _donation_id))
     obj = xmltodict.parse(donation_details.content)
     amount = obj['donation']['amount']
@@ -77,6 +78,11 @@ def get_current_user():
 @app.route('/api/getCharities')
 def getCharities():
     return Response(json.dumps(Charity), mimetype='application/json')
+
+@app.route('/api/getPoints')
+def givePoints():
+    point_map=json.dumps(dict([(elem[0],elem[1])for elem in Ammounts]))
+    return Response(point_map,mimetype='application/json')
 
 @app.route('/api/post/<charity_id>')
 def getId (charity_id):
