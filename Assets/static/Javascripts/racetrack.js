@@ -1,7 +1,7 @@
 var Charace = Charace || {};
 
 Charace.Config = {
-    spriteSize: 80
+    spriteSize: 120
 };
 
 Charace.Racetrack = function () {
