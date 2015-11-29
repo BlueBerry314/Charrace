@@ -10,14 +10,8 @@ Charace.Racetrack = function () {
     var racetrackWhitespaceHeight = undefined;
     var racetrackWidth = undefined;
 
-
-    var charities =
-        {
-        "1": {"name":"Charity 1", "points":60},
-        "2": {"name":"Charity 2", "points":20},
-        "3": {"name":"Charity 3", "points":80},
-        "4": {"name":"Charity 4", "points":99}
-        };
+    var selectedLinkUrl = undefined;
+    var charities = {};
     var goal = 100;
 
     var setGoal = function (g) { goal = g; };
@@ -26,7 +20,26 @@ Charace.Racetrack = function () {
     var initialise = function () {
         $racetrack = $("#racetrack");
         updateSizes();
-        render();
+        getCharities();
+    };
+
+    var getCharities = function () {
+        $.get("/api/getCharities", function (data) {
+            for (var charityId in data){
+                charities[charityId] = {};
+                charities[charityId].name = data[charityId];
+                charities[charityId].points = 0;
+                charities[charityId].update = true;
+                $racetrack.append('<div class="charity" data-charity="' + charityId + '"></div>');
+                $racetrack.append('<div class="charity-name" data-charity="' + charityId + '">' + charities[charityId].name + '</div>')
+            }
+            render();
+            createDonate();
+        });
+    };
+
+    var getCharityPoints = function () {
+
     };
 
     var updateSizes = function () {
@@ -38,13 +51,53 @@ Charace.Racetrack = function () {
         var i = 0;
         for (var charityId in charities) {
             var charity = charities[charityId];
-            var charityEl = $('.charity[data-charity="' + charityId + '"]');
-            charityEl.css("top",(racetrackWhitespaceHeight + Charace.Config.spriteSize)*i + "px");
-            charityEl.animate({
-                "left": (charity.points/goal)*racetrackWidth + "px"
-            }, 2000, function () {});
+            if (charity.update) {
+                var charityEl = $('.charity[data-charity="' + charityId + '"]');
+                var charityNameEl = $('.charity-name[data-charity="' + charityId + '"]');
+                charityEl.css("top", (racetrackWhitespaceHeight + Charace.Config.spriteSize) * i + "px");
+                charityEl.animate({
+                    "left": (charity.points / goal) * racetrackWidth + "px"
+                }, 2000, function () {
+                });
+                charityNameEl.css("top", (racetrackWhitespaceHeight + Charace.Config.spriteSize) * i + "px");
+                charityNameEl.animate({
+                    "left": (charity.points/goal < 0.5 ? (charity.points / goal) * racetrackWidth+80 : 10) + "px"
+                });
+            }
+            charity.update = false;
             i++;
         }
+    };
+
+    var createDonate = function () {
+        $('#donate-window').show(1000);
+        $select = $('#donate-select');
+        for (var charityId in charities) {
+            var charity = charities[charityId];
+            $select.append('<option value="' + charityId + '">' + charity.name + '</option>');
+        }
+        $select.change(function () {
+            changeDonateButton($('#donate-select option:selected').val());
+        });
+        $('#donate-button').click(function () {
+            if (selectedLinkUrl != undefined) {
+                window.open(selectedLinkUrl);
+            }
+        })
+    };
+
+    var changeDonateButton = function (charityId) {
+        $donateFields = $('#donate-fields');
+        if (charityId == "undefined") return;
+        $.get("/api/post/" + charityId, function (data) {
+            $('#donate-description').text(data.description);
+            selectedLinkUrl = data.url;
+            if (selectedLinkUrl != undefined) {
+                $donateFields.show();
+            }else {
+                $donateFields.hide();
+            }
+        });
     };
 
     return {
