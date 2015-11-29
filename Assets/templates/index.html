@@ -17,19 +17,17 @@
 </div>
 <div class="content">
     <div id="racetrack">
-        <div class="charity" data-charity="1"></div>
-        <div class="charity" data-charity="2"></div>
-        <div class="charity" data-charity="3"></div>
-        <div class="charity" data-charity="4"></div>
+
     </div>
 </div>
-<div class="container">
+<div class="container" id="donate-window" style="display: none;">
     <form class="center-control">
         <h2 class="form-heading">Donate</h2>
         <select class="form-control" id="donate-select">
-
+            <option selected value="undefined">--</option>
         </select>
-
+        <p id="donate-description" class="donate-fields"></p>
+        <button id="donate-button" class="btn btn-lg btn-primary btn-block donate-fields" style="display: none;"></button>
     </form>
 </div>
 </body>
