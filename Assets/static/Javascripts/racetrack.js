@@ -65,10 +65,14 @@ Charace.Racetrack = function () {
                 var charityEl = $('.charity[data-charity="' + charityId + '"]');
                 var charityNameEl = $('.charity-name[data-charity="' + charityId + '"]');
                 charityEl.css("top", (racetrackWhitespaceHeight + Charace.Config.spriteSize) * i + "px");
-                charityEl.animate({
-                    "left": (charity.points / goal) * racetrackWidth + "px"
-                }, 2000, function () {
-                });
+                charityEl.css('background-image','url(/static/Gifs/' + charityId + '_Moving.gif');
+                (function (charityId, charityEl) {
+                    charityEl.animate({
+                        "left": (charity.points / goal) * racetrackWidth + "px"
+                    }, 2000, function () {
+                         charityEl.css('background-image','url(/static/Gifs/' + charityId + '_Idle.gif');
+                    });
+                })(charityId, charityEl);
                 charityNameEl.css("top", (racetrackWhitespaceHeight + Charace.Config.spriteSize) * i + "px");
                 charityNameEl.animate({
                     "left": (charity.points/ goal) * racetrackWidth + (charity.points/goal < 0.5 ? 80 : - 10 - charityNameEl.width()) + "px"
