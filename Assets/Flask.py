@@ -54,8 +54,7 @@ def post_donation(char_id):
     donation_details =  requests.get('https://api.justgiving.com/%s/v1/donation/%s'%(api_key, _donation_id))
     obj = xmltodict.parse(donation_details.content)
     amount = obj['donation']['amount']
-    db = get_db()
-    db.execute('insert into charities (char_id, amount) values (?, ?)',[char_id, amount])
+    update_db(char_id, amount)
     print("I CAME HERE FOR YOU SENPIE")
     return render_template('close.html')
 
