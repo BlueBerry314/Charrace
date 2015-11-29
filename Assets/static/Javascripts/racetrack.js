@@ -68,14 +68,14 @@ Charace.Racetrack = function () {
                 charityEl.css('background-image','url(/static/Gifs/' + charityId + '_Moving.gif');
                 (function (charityId, charityEl) {
                     charityEl.animate({
-                        "left": min(charity.points/ goal, 1) * racetrackWidth + "px"
+                        "left": Math.min(charity.points/ goal, 1) * racetrackWidth + "px"
                     }, 5000, function () {
                          charityEl.css('background-image','url(/static/Gifs/' + charityId + '_Idle.gif');
                     });
                 })(charityId, charityEl);
                 charityNameEl.css("top", (racetrackWhitespaceHeight + Charace.Config.spriteSize) * i + "px");
                 charityNameEl.animate({
-                    "left": min(charity.points/ goal, 1) * racetrackWidth + (charity.points/goal < 0.5 ? 80 : - 10 - charityNameEl.width()) + "px"
+                    "left": Math.min(charity.points/ goal, 1) * racetrackWidth + (charity.points/goal < 0.5 ? 80 : - 10 - charityNameEl.width()) + "px"
                 }, 5000);
             }
             charity.update = false;
