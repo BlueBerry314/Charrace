@@ -30,11 +30,12 @@ Charace.Racetrack = function () {
                 charities[charityId] = {};
                 charities[charityId].name = data[charityId];
                 charities[charityId].points = 0;
-                charities[charityId].update = true;
+                charities[charityId].update = false;
                 $racetrack.append('<div class="charity" data-charity="' + charityId + '"></div>');
                 $racetrack.append('<div class="charity-name" data-charity="' + charityId + '">' + charities[charityId].name + '</div>')
             }
             render();
+            getCharityPoints();
             createDonate();
         });
     };
@@ -70,8 +71,8 @@ Charace.Racetrack = function () {
                 });
                 charityNameEl.css("top", (racetrackWhitespaceHeight + Charace.Config.spriteSize) * i + "px");
                 charityNameEl.animate({
-                    "left": (charity.points/goal < 0.5 ? (charity.points / goal) * racetrackWidth+80 : 10) + "px"
-                });
+                    "left": (charity.points/ goal) * racetrackWidth + (charity.points/goal < 0.5 ? 80 : - 10 - charityNameEl.width()) + "px"
+                }, 2000);
             }
             charity.update = false;
             i++;
