@@ -21,6 +21,7 @@ Charace.Racetrack = function () {
         $racetrack = $("#racetrack");
         updateSizes();
         getCharities();
+        window.setInterval(getCharityPoints, 5000);
     };
 
     var getCharities = function () {
@@ -39,7 +40,15 @@ Charace.Racetrack = function () {
     };
 
     var getCharityPoints = function () {
-
+        $.get("/api/getPoints", function (data) {
+            for (var charityId in data) {
+                if (data[charityId] != charities[charityId].points) {
+                    charities[charityId].points = data[charityId];
+                    charities[charityId].update = true;
+                }
+            }
+            render();
+        })
     };
 
     var updateSizes = function () {
