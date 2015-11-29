@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/Stylesheets/racetrack.css" rel="stylesheet">
+    <title>Charace</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/static/Javascripts/racetrack.js" type="application/javascript"></script>
+</head>
+<body>
+<div class="container">
+    <div class="center-control">
+        <h1>Charace - The Charity Race</h1>
+        <p>This is a really cool app!</p>
+    </div>
+</div>
+<div class="content">
+    <div id="racetrack">
+
+    </div>
+</div>
+<div class="container" id="donate-window" style="display: none;">
+    <form class="center-control">
+        <h2 class="form-heading">Donate</h2>
+        <select class="form-control" id="donate-select">
+            <option selected value="undefined">--</option>
+        </select>
+        <p id="donate-description" class="donate-fields"></p>
+        <button id="donate-button" class="btn btn-lg btn-primary btn-block donate-fields">Donate!</button>
+    </form>
+</div>
+<audio autoplay="true" loop>
+    <source src="/static/Audio/music.mp3" type="audio/mpeg">
+</audio>
+</body>
+</html>

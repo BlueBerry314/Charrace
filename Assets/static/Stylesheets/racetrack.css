@@ -1,0 +1,45 @@
+body {
+    background: lightgray;
+}
+
+.center-control {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.content {
+    display: block;
+    width: 100%;
+    background: #803833;
+}
+
+#racetrack {
+    position: relative;
+    width: 80%;
+    height: 400px;
+    background: url('/static/Backgrounds/race_trace.png') no-repeat;
+    margin: auto;
+    display: block;
+}
+
+#racetrack .charity {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background-size: 80px 80px;
+    background-clip: content-box;
+    background-repeat: no-repeat;
+    display: block;
+}
+#racetrack .charity-name {
+    position: absolute;
+    vertical-align: middle;
+    height: 80px;
+    line-height: 80px;
+    color: #fff;
+    display: block;
+}
+
+.donate-fields {
+    display: none;
+}
