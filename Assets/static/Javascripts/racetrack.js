@@ -12,7 +12,7 @@ Charace.Racetrack = function () {
 
     var selectedLinkUrl = undefined;
     var charities = {};
-    var goal = 100;
+    var goal = 200000;
 
     var setGoal = function (g) { goal = g; };
     var getGoal = function () { return goal; };
