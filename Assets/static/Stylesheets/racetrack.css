@@ -10,14 +10,14 @@ body {
 .content {
     display: block;
     width: 100%;
-    background: gray;
+    background: #803833;
 }
 
 #racetrack {
     position: relative;
     width: 80%;
     height: 400px;
-    background: url('/static/Backgrounds/race_trace.png') no-repeat 100% 100%;
+    background: url('/static/Backgrounds/race_trace.png') no-repeat;
     margin: auto;
     display: block;
 }
