@@ -24,7 +24,6 @@ Ammounts = [['290626',0]
 api_key = '1b135151'
 
 def connect_db():
-    print("shit")
     db = sqlite3.connect(DATABASE)
     return db
 
@@ -55,9 +54,10 @@ def post_donation(char_id):
     donation_details =  requests.get('https://api.justgiving.com/%s/v1/donation/%s'%(api_key, _donation_id))
     obj = xmltodict.parse(donation_details.content)
     amount = obj['donation']['amount']
-    add_entry = [char_id,amount]
+    db = get_db()
+    db.execute('insert into charities (char_id, amount) values (?, ?)',[char_id, amount])
     print("I CAME HERE FOR YOU SENPIE")
-    return redirect('/', code=303)
+    return render_template('close.html')
 
 def calucalte_sum_index(entries):
     for elem in entries:
