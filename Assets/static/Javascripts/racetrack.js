@@ -87,7 +87,7 @@ Charace.Racetrack = function () {
     };
 
     var changeDonateButton = function (charityId) {
-        $donateFields = $('#donate-fields');
+        $donateFields = $('.donate-fields');
         if (charityId == "undefined") return;
         $.get("/api/post/" + charityId, function (data) {
             $('#donate-description').text(data.description);
