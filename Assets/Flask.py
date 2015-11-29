@@ -1,5 +1,5 @@
 __author__ = '1m2i3_000'
-from flask import Flask, render_template, request, jsonify, session, g, redirect, url_for, abort
+from flask import Flask, render_template, request, jsonify, session, g, redirect, url_for, abort ,Response
 import json
 import requests
 import xmltodict
@@ -38,7 +38,7 @@ def init_db():
         db.cursor().executescript(f.read())
     db.commit()
 
-@app.cli.command('initdb')
+#@app.cli.command('initdb')
 def initdb_command():
     """Creates the database tables."""
     init_db()
@@ -52,7 +52,7 @@ def get_db():
         g.sqlite_db = connect_db()
     return g.sqlite_db
 
-@app.teardown_appcontext
+#@app.teardown_appcontext
 def close_db(error):
     """Closes the database again at the end of the request."""
     if hasattr(g, 'sqlite_db'):
@@ -69,12 +69,12 @@ def get_current_user():
 
 @app.route('/api/getCharities')
 def getCharities():
-    return json.dumps(Charity)
+    return Response(json.dumps(Charity), mimetype='application/json')
 
 @app.route('/api/post/<charity_id>')
 def getId (charity_id):
     testy = get_Charity_Details(charity_id)
-    return testy
+    return Response(testy, mimetype='application/json')
 
 def get_Charity_Details(_charity_id):
     url = 'https://v3-sandbox.justgiving.com/donation/direct/charity/%s' % (_charity_id)
