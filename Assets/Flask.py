@@ -17,10 +17,6 @@ Charity  = {"290626":"Suited to Success Inc."
            ,"2050":"The Demo Charity (JustGiving Demo)"
            ,"186234":"Al-khair"}
 
-Ammounts = [['290626',0]
-           ,['654538',0]
-           ,['2050',0]
-           ,['186234',0]]
 api_key = '1b135151'
 
 def connect_db():
@@ -33,8 +29,7 @@ def get_db():
 
 def update_db(_char_id,_amount):
     db = get_db()
-    db.execute('insert into charities (char_id, amount) values (?, ?)',
-               [_char_id, _amount])
+    db.execute('insert into charities (char_id, amount) values (?, ?)',[_char_id, _amount])
     db.commit()
     print("i did it")
     return
@@ -44,9 +39,8 @@ def index():
     db = get_db()
     cur = db.execute('select char_id, amount from charities')
     entries = [dict(char_id =row[0],amount = row[1])for row in  cur.fetchall()]
-    calucalte_sum_index(entries)
-    print(Ammounts)
-    return render_template('index.html', ammounts=Ammounts)
+    print(calucalte_sum_index(entries))
+    return render_template('index.html')
 
 @app.route('/thanks/<char_id>/')
 def post_donation(char_id):
@@ -59,17 +53,32 @@ def post_donation(char_id):
     return render_template('close.html')
 
 def calucalte_sum_index(entries):
+    Ammounts = [['290626',0]
+           ,['654538',0]
+           ,['2050',0]
+           ,['186234',0]]
     for elem in entries:
         for item in Ammounts:
             if elem['char_id'] in item[0]:
                 item[1]+= elem['amount']
-    return
+
+    return (Ammounts)
 
 def calucalte_sum(_add_entry):
+    Ammounts = [['290626',0]
+           ,['654538',0]
+           ,['2050',0]
+           ,['186234',0]]
     for item in Ammounts:
         if _add_entry[0] in item[0]:
             item[1]+=_add_entry[1]
-    return
+    return (Ammounts)
+
+def calucaltions():
+    db = get_db()
+    cur = db.execute('select char_id, amount from charities')
+    entries = [dict(char_id =row[0],amount = row[1])for row in  cur.fetchall()]
+    return(calucalte_sum_index(entries))
 
 @app.route('/test')
 def get_current_user():
@@ -82,7 +91,7 @@ def getCharities():
 @app.route('/api/getPoints')
 def givePoints():
     #print(Ammounts)
-    point_map=json.dumps(dict([(elem[0],elem[1])for elem in Ammounts]))
+    point_map=json.dumps(dict([(elem[0],elem[1])for elem in calucaltions()]))
     return Response(point_map,mimetype='application/json')
 
 @app.route('/api/post/<charity_id>')
